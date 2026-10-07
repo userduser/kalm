@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Comment filter — batch lifecycle check</title>
+    <link rel="stylesheet" href="/src/comments/gate.css" />
+    <script>
+      window.ytcfg = { get: () => 'LOCAL_TEST' };
+    </script>
+    <script src="/src/comments/settings.js"></script>
+    <script src="/src/comments/rules.js"></script>
+    <script src="/src/comments/filter.js"></script>
+    <script src="/src/comments/profiles.js"></script>
+    <script src="/src/comments/gate.js"></script>
+    <script src="/src/comments/runtime.js"></script>
+    <script>
+      window.__YTCommentFilterStart(window.__YTCommentFilterSettings.DEFAULT_DOMAINS, true, {
+        blockAllLinks: true,
+        keywords: ['promo phrase'],
+      });
+    </script>
+    <style>
+      :root {
+        color-scheme: dark;
+        font: 15px/1.6 system-ui;
+        background: #101012;
+        color: #e8e5ef;
+      }
+      body {
+        max-width: 880px;
+        padding: 36px 24px;
+        margin: auto;
+      }
+      h1 {
+        font-size: 27px;
+        margin: 0 0 8px;
+      }
+      p {
+        color: #b9b5c4;
+      }
+      strong,
+      #result {
+        color: #b9e6cf;
+      }
+      .cases {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+      }
+      section {
+        border: 1px solid #34323d;
+        border-radius: 12px;
+        padding: 18px;
+      }
+      h2 {
+        font-size: 18px;
+        margin: 0;
+      }
+      ytd-comments,
+      ytd-comment-thread-renderer,
+      ytd-comment-view-model,
+      ytd-comment-renderer {
+        display: block;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      ytd-comment-thread-renderer {
+        border-top: 1px solid #34323d;
+        padding: 12px 0;
+      }
+      ytd-comment-view-model {
+        padding: 8px 0;
+      }
+      .replies {
+        padding-left: 20px;
+      }
+      #author-text {
+        color: #cfbfff;
+        font-weight: 600;
+      }
+      .native-spinner[active]::after {
+        content: 'Loading next batch…';
+      }
+      .native-spinner:not([active]) {
+        display: none;
+      }
+      code {
+        font-size: 13px;
+      }
+      dl {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+      dt {
+        color: #b9b5c4;
+      }
+      dd {
+        margin: 0;
+        color: #b9e6cf;
+        font-weight: 600;
+      }
+      @media (max-width: 650px) {
+        .cases {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Normal threads and Shorts batches</h1>
+    <p>
+      Local regression check using the production gate and profile loader. Native list nodes and
+      loading controls stay connected.
+    </p>
+    <p id="result">Running…</p>
+    <dl>
+      <div>
+        <dt>Unchecked / rejected visible frames</dt>
+        <dd id="frames">—</dd>
+      </div>
+      <div>
+        <dt>Native loading controls</dt>
+        <dd id="loading">—</dd>
+      </div>
+      <div>
+        <dt>Profile requests</dt>
+        <dd id="requests">—</dd>
+      </div>
+      <div>
+        <dt>Waiting comments</dt>
+        <dd id="waiting">—</dd>
+      </div>
+    </dl>
+    <div class="cases">
+      <section>
+        <h2>Normal video</h2>
+        <ytd-comments id="watch"
+          ><div class="native-spinner" active></div>
+          <div class="native-items"></div
+        ></ytd-comments>
+      </section>
+      <section>
+        <h2>Shorts panel</h2>
+        <ytd-engagement-panel-section-list-renderer
+          target-id="engagement-panel-comments-section"
+          id="shorts"
+          ><div class="native-spinner" active></div>
+          <div class="native-items"></div
+        ></ytd-engagement-panel-section-list-renderer>
+      </section>
+    </div>
+    <p id="details"></p>
+    <pre id="diagnostics" hidden></pre>
+    <script>
+      (async () => {
+        const api = window.__YTCommentFilter,
+          profiles = window.__YTCommentFilterProfiles;
+        await api.clearCache();
+        const A = 'UC' + 'a'.repeat(22),
+          B = 'UC' + 'b'.repeat(22),
+          N = 'UCwEOrwgEKG5-re9rFSmJzdQ';
+        const tracked = new Set(),
+          managed = new Set(),
+          errors = [],
+          nativeLoads = [];
+        let badFrames = 0,
+          tracking = true;
+        const wait = async (predicate) => {
+          const end = performance.now() + 8000;
+          while (!predicate()) {
+            if (performance.now() > end) throw Error('Timed out waiting for screening');
+            await new Promise((r) => setTimeout(r, 20));
+          }
+        };
+        const assert = (value, message) => {
+          if (!value) errors.push(message);
+        };
+        function view(
+          id,
+          text,
+          label,
+          { anchor = false, key = 'key-' + label, reject = false, legacy = false } = {},
+        ) {
+          const row = document.createElement(
+            legacy ? 'ytd-comment-renderer' : 'ytd-comment-view-model',
+          );
+          const content = { content: text };
+          if (legacy)
+            row.data = {
+              authorEndpoint: { browseEndpoint: { browseId: id } },
+              contentText: content,
+            };
+          else
+            row.polymerController = {
+              viewModel: { commentKey: key },
+              commentEntity: { author: { channelId: id }, properties: { content } },
+            };
+          // Current YouTube creator rows may expose a button instead of an avatar link.
+          const author = document.createElement(anchor ? 'a' : 'button');
+          author.id = anchor ? 'author-text' : 'author-thumbnail-button';
+          if (anchor) author.href = '/channel/' + id;
+          author.textContent = label;
+          const body = document.createElement('yt-attributed-string');
+          body.id = 'content-text';
+          body.textContent = text;
+          row.append(author, body);
+          row.dataset.expectedBlocked = String(reject);
+          row.dataset.expectedAuthor = id;
+          tracked.add(row);
+          managed.add(row);
+          return row;
+        }
+        function thread(row, replies = []) {
+          const host = document.createElement('ytd-comment-thread-renderer');
+          host.append(row);
+          const container = document.createElement('div');
+          container.className = 'replies';
+          container.append(...replies);
+          host.append(container);
+          managed.add(host);
+          return host;
+        }
+        function visible(row) {
+          for (let n = row; n instanceof Element; n = n.parentElement) {
+            const s = getComputedStyle(n);
+            if (s.display === 'none' || s.visibility === 'hidden' || Number(s.opacity) === 0)
+              return false;
+          }
+          return row.isConnected;
+        }
+        function sample() {
+          for (const row of tracked)
+            if (visible(row)) {
+              const decision = profiles.peek(row.dataset.expectedAuthor);
+              if (!decision || decision.blocked || row.dataset.expectedBlocked === 'true')
+                badFrames++;
+            }
+          if (tracking && document.body.dataset.testResult !== 'fail')
+            requestAnimationFrame(sample);
+        }
+        requestAnimationFrame(sample);
+        const watch = document.querySelector('#watch'),
+          shorts = document.querySelector('#shorts');
+        const watchItems = watch.querySelector('.native-items'),
+          shortsItems = shorts.querySelector('.native-items');
+        const normal = view(A, 'Ordinary video comment', 'Allowed author — current entity data');
+        const replyGood = view(A, 'Allowed reply', 'Allowed reply');
+        const replyBad = view(B, 'Rejected reply', 'Rejected reply', { reject: true });
+        const rejected = view(N, 'A comment without any links', 'Channel-card author', {
+          reject: true,
+        });
+        const legacy = view(A, 'Legacy comments still pass', 'Legacy author', { legacy: true });
+        const normalThread = thread(normal, [replyGood, replyBad]),
+          rejectedThread = thread(rejected);
+        const nativeContinuation = document.createElement('ytd-continuation-item-renderer');
+        nativeContinuation.dataset.token = 'NEXT_BATCH';
+        watchItems.append(normalThread, rejectedThread, thread(legacy), nativeContinuation);
+        shortsItems.append(
+          view(A, 'Ordinary Shorts comment', 'Allowed author — Shorts', { anchor: true }),
+        );
+        const shortsBad = view(N, 'Another comment without links', 'Same channel-card author', {
+          anchor: true,
+          reject: true,
+        });
+        shortsItems.append(shortsBad);
+        // Simulate the native completion callback independently of screening.
+        // Each list retains references to the renderer nodes it stamped.
+        const nativeOwners = [watch, shorts].map((root) => ({
+          root,
+          nodes: [...managed].filter((n) => root.contains(n)),
+        }));
+        setTimeout(() => {
+          for (const { root, nodes } of nativeOwners) {
+            const connected = nodes.every((n) => n.isConnected);
+            nativeLoads.push(connected);
+            root.dataset.nativeSettled = String(connected);
+            if (connected) root.querySelector('.native-spinner').removeAttribute('active');
+          }
+        }, 750);
+        await wait(
+          () =>
+            normal.hasAttribute('data-ycf-approved') &&
+            rejected.hasAttribute('data-ycf-blocked') &&
+            replyBad.hasAttribute('data-ycf-blocked') &&
+            legacy.hasAttribute('data-ycf-approved'),
+        );
+        await wait(() => nativeLoads.length === 2);
+        assert(
+          visible(normal) && visible(replyGood) && visible(legacy),
+          'Normal comments or allowed replies did not display',
+        );
+        assert(
+          !visible(rejected) && !visible(replyBad),
+          'Rejected normal comments or replies displayed',
+        );
+        assert(
+          rejected.isConnected &&
+            rejectedThread.isConnected &&
+            getComputedStyle(rejectedThread).display === 'none',
+          'Native rejected thread was detached or left a gap',
+        );
+        assert(
+          nativeContinuation.isConnected && nativeContinuation.dataset.token === 'NEXT_BATCH',
+          'Pagination marker changed',
+        );
+        // Body commands must be screened even when a linked mention has no DOM anchor.
+        const linked = view(A, 'A linked mention', 'Hidden body command', { reject: true });
+        linked.polymerController.commentEntity.properties.content.commandRuns = [
+          { onTap: { innertubeCommand: { browseEndpoint: { browseId: N } } } },
+        ];
+        watchItems.append(thread(linked));
+        await wait(() => linked.hasAttribute('data-ycf-blocked'));
+        assert(!visible(linked), 'A channel link in entity body commands passed');
+        const urlRow = view(A, 'www.example.org/offer', 'Any link', { reject: true });
+        const keywordRow = view(A, 'PROMO phrase!', 'Keyword', { reject: true });
+        watchItems.append(thread(urlRow), thread(keywordRow));
+        await wait(
+          () =>
+            urlRow.hasAttribute('data-ycf-blocked') && keywordRow.hasAttribute('data-ycf-blocked'),
+        );
+        assert(!visible(urlRow) && !visible(keywordRow), 'New comment rules failed');
+        // Later cached batches must settle, including a batch with no allowed rows.
+        for (const allBlocked of [false, true]) {
+          const spinner = shorts.querySelector('.native-spinner');
+          spinner.setAttribute('active', '');
+          const next = view(
+            allBlocked ? N : A,
+            allBlocked ? 'Only rejected comments' : 'Allowed later batch',
+            allBlocked ? 'Rejected cached batch' : 'Allowed cached batch',
+            { anchor: true, reject: allBlocked },
+          );
+          shortsItems.append(next);
+          await wait(() =>
+            next.hasAttribute(allBlocked ? 'data-ycf-blocked' : 'data-ycf-approved'),
+          );
+          if (next.isConnected) spinner.removeAttribute('active');
+          assert(next.isConnected, 'A later native batch row was detached');
+        }
+        // Native template/placeholder rows should not keep the filter's status busy.
+        const emptyThread = document.createElement('ytd-comment-thread-renderer');
+        watchItems.append(emptyThread);
+        const hiddenTemplate = view(A, 'Template content', 'Hidden native template');
+        hiddenTemplate.hidden = true;
+        watchItems.append(hiddenTemplate);
+        const unresolved = document.createElement('ytd-comment-view-model');
+        unresolved.innerHTML = '<div id="content-text">Pending placeholder</div>';
+        watchItems.append(unresolved);
+        await wait(() => unresolved.getAttribute('data-ycf-check') === 'unresolved');
+        unresolved.remove();
+        await wait(() => watch.querySelector('.ycf-status span').hidden);
+        assert(
+          watch.querySelector('.ycf-status span').hidden,
+          'Removing the final pending row left the filter busy',
+        );
+        // Non-bubbling YouTube entity events must invalidate an approval even without a text/href mutation.
+        normal.dataset.expectedAuthor = N;
+        normal.dataset.expectedBlocked = 'true';
+        normal.polymerController.commentEntity = {
+          author: { channelId: N },
+          properties: { content: { content: 'Ordinary video comment' } },
+        };
+        normal.dispatchEvent(
+          new CustomEvent('yt-next-continuation-data-updated', { bubbles: false }),
+        );
+        await wait(() => normal.hasAttribute('data-ycf-blocked'));
+        // A rejected row recycled into a safe author must be visible again after checking.
+        normal.dataset.expectedAuthor = A;
+        normal.dataset.expectedBlocked = 'false';
+        normal.polymerController.commentEntity = {
+          author: { channelId: A },
+          properties: { content: { content: 'Ordinary video comment' } },
+        };
+        normal.dispatchEvent(new CustomEvent('yt-page-data-updated', { bubbles: false }));
+        await wait(() => normal.hasAttribute('data-ycf-approved') && visible(normal));
+        // Moves into newly stamped wrappers must propagate the existing approval.
+        const moved = thread(normal);
+        watchItems.append(moved);
+        await wait(() => moved.hasAttribute('data-ycf-approved'));
+        // Metadata can arrive after the body, without introducing author hrefs.
+        const late = document.createElement('ytd-comment-view-model');
+        late.innerHTML = '<div id="content-text">Late entity metadata</div>';
+        watchItems.append(thread(late));
+        await wait(() => late.getAttribute('data-ycf-check') === 'unresolved');
+        late.polymerController = {
+          viewModel: { commentKey: 'late' },
+          commentEntity: {
+            author: { channelId: A },
+            properties: { content: { content: 'Late entity metadata' } },
+          },
+        };
+        late.dispatchEvent(
+          new CustomEvent('yt-append-continuation-items-action-finished', { bubbles: false }),
+        );
+        await wait(() => late.hasAttribute('data-ycf-approved'));
+        await new Promise(requestAnimationFrame);
+        tracking = false;
+        const stats = api.stats();
+        assert(badFrames === 0, 'Unchecked or rejected row appeared before screening');
+        assert(
+          stats.ui.waiting === 0 && stats.ui.unresolved === 0,
+          'Resolved batches left comments waiting',
+        );
+        assert(
+          [...document.querySelectorAll('.native-spinner')].every((s) => !s.hasAttribute('active')),
+          'Native spinner stayed active',
+        );
+        assert(
+          stats.profiles.lookups === 3 && stats.profiles.requests === 4,
+          'Duplicate rows added unexpected network requests',
+        );
+        document.querySelector('#frames').textContent = badFrames;
+        document.querySelector('#loading').textContent = 'Both settled; pagination preserved';
+        document.querySelector('#requests').textContent =
+          stats.profiles.requests + ' (3 unique authors)';
+        document.querySelector('#waiting').textContent = stats.ui.waiting;
+        document.querySelector('#result').textContent = errors.length
+          ? 'FAIL — ' + errors.join('; ')
+          : 'PASS — normal threads, replies and later Shorts batches settled with zero visible unchecked comments.';
+        document.querySelector('#details').textContent =
+          'The captured @nesgabri channel is rejected in one parent-profile request. Its linked channels and avatars are not fetched. Cached repeats add no requests.';
+        const report = {
+          version: api.version,
+          passed: !errors.length,
+          badFrames,
+          nativeLoads,
+          errors,
+          stats,
+        };
+        document.querySelector('#diagnostics').textContent = JSON.stringify(report, null, 2);
+        document.body.dataset.testResult = errors.length ? 'fail' : 'pass';
+      })().catch((error) => {
+        document.querySelector('#result').textContent = 'FAIL — ' + error.message;
+        document.body.dataset.testResult = 'fail';
+        document.querySelector('#diagnostics').textContent = JSON.stringify(
+          {
+            passed: false,
+            error: error.message,
+            nativeLoads: [...document.querySelectorAll('#watch,#shorts')].map(
+              (r) => r.dataset.nativeSettled === 'true',
+            ),
+            stats: window.__YTCommentFilter.stats(),
+          },
+          null,
+          2,
+        );
+      });
+    </script>
+  </body>
+</html>

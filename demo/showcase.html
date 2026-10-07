@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Kalm · Interface preview</title>
+    <style>
+      :root {
+        background: #0b100d;
+        color: #94a29a;
+        font: 13px system-ui;
+      }
+      body {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      header {
+        margin-bottom: 28px;
+      }
+      h1 {
+        color: #e5ede8;
+        font-size: 20px;
+        margin: 0 0 6px;
+      }
+      .views {
+        display: flex;
+        align-items: flex-start;
+        gap: 30px;
+      }
+      iframe {
+        border: 1px solid #29342d;
+        border-radius: 18px;
+        background: #101412;
+      }
+      .popup {
+        width: 322px;
+        height: 420px;
+      }
+      .options {
+        width: 570px;
+        height: 550px;
+      }
+      @media (max-width: 750px) {
+        .views {
+          flex-direction: column;
+        }
+        .options {
+          max-width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Kalm</h1>
+      Interface preview · simulated browser APIs
+    </header>
+    <div class="views">
+      <iframe class="popup" title="Toolbar popup" src="/popup-preview"></iframe
+      ><iframe
+        class="options"
+        title="Comment settings"
+        src="/options-preview?section=comments&amp;tab=7"
+      ></iframe>
+    </div>
+  </body>
+</html>
