@@ -1,0 +1,11 @@
+{
+  "release": "2026.1006.1931",
+  "repository": "https://github.com/uBlockOrigin/uBOL-home",
+  "commit": "9379e3387c6f615e695add23c2325c8705faca83",
+  "uBlockCommit": "01092d95dbc7d91599a5ad017d5b98aba1118659",
+  "packages": {
+    "chromium": { "file": "uBOLite_2026.1006.1931.chromium.zip", "sha256": "1670f92590f5ad5b20f02d0a75e144572567b4ba979b3dc3204c41f651206fe7" },
+    "firefox": { "file": "uBOLite_2026.1006.1931.firefox.signed.xpi", "sha256": "585689426df1a3644e6c967a1a1a9986ca9ae5c8dcff6004f1e76889fb8b3386" },
+    "safari": { "file": "uBOLite_2026.1006.1931.safari.zip", "sha256": "2dd32e4d84a4666e7864f527f037f0191ee0175ecfbd95ab88cfefca0e273f3f" }
+  }
+}
