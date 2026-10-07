@@ -1,0 +1,81 @@
+{
+  "metadata": {
+    "channelMetadataRenderer": {
+      "externalId": "UCsK58Ao40Z5j5RK-zVW1VUQ",
+      "title": "Ursula Bachmeier",
+      "description": ""
+    }
+  },
+  "contents": {
+    "twoColumnBrowseResultsRenderer": {
+      "tabs": [
+        {
+          "tabRenderer": {
+            "title": "Home",
+            "selected": true,
+            "endpoint": {
+              "browseEndpoint": {
+                "browseId": "UCsK58Ao40Z5j5RK-zVW1VUQ"
+              }
+            },
+            "content": {
+              "sectionListRenderer": {
+                "contents": [
+                  {
+                    "itemSectionRenderer": {
+                      "contents": [
+                        {
+                          "shelfRenderer": {
+                            "title": {
+                              "runs": [
+                                {
+                                  "text": "👇💓 find your partner here💓👇"
+                                }
+                              ]
+                            },
+                            "content": {
+                              "horizontalListRenderer": {
+                                "items": [
+                                  {
+                                    "gridChannelRenderer": {
+                                      "channelId": "UCZDj73Rbj4D2nVyxCITvL5Q",
+                                      "title": {
+                                        "simpleText": "Isabelle Bjørdal"
+                                      },
+                                      "navigationEndpoint": {
+                                        "browseEndpoint": {
+                                          "browseId": "UCZDj73Rbj4D2nVyxCITvL5Q"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "gridChannelRenderer": {
+                                      "channelId": "UCoKLpKZwE3Vn6NL2EV0iu9Q",
+                                      "title": {
+                                        "simpleText": "Asxu Tyra"
+                                      },
+                                      "navigationEndpoint": {
+                                        "browseEndpoint": {
+                                          "browseId": "UCoKLpKZwE3Vn6NL2EV0iu9Q"
+                                        }
+                                      }
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

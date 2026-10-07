@@ -1,0 +1,10 @@
+/* Static extension CSS is installed before page elements are displayed. */
+html:not([data-ycf-off]) :is(ytd-comment-thread-renderer, ytd-comment-view-model, yt-comment-view-model, ytd-comment-renderer):not([data-ycf-approved]) {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+/* Preserve YouTube's list bookkeeping while collapsing confirmed rejections. */
+html:not([data-ycf-off]) [data-ycf-blocked] {
+  display: none !important;
+}

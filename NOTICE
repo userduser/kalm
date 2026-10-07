@@ -1,0 +1,7 @@
+Kalm modifications, Copyright (C) 2026 Kalm contributors.
+Kalm incorporates uBlock Origin Lite, Copyright (C) 2022-present Raymond Hill,
+and corresponding uBlock Origin source. Original notices remain in the source.
+The engine is GPL-3.0-or-later. Kalm is an independent project, not an official
+upstream release. See LICENSE and third_party/engine for upstream notices.
+Google Sans is distributed under the SIL Open Font License 1.1; its full license
+and source metadata are in src/ui/assets. Filter lists retain their own licenses.
