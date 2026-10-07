@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2026 Kalm contributors.
 // Defaults and tuning. User domains are loaded from local settings at startup.
 globalThis.__YTCommentFilterStarters = [];
 globalThis.__YT_COMMENT_FILTER_RULES__ = Object.freeze({

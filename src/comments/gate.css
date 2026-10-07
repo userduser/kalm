@@ -1,5 +1,12 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later; Copyright (C) 2026 Kalm contributors. */
 /* Static extension CSS is installed before page elements are displayed. */
-html:not([data-ycf-off]) :is(ytd-comment-thread-renderer, ytd-comment-view-model, yt-comment-view-model, ytd-comment-renderer):not([data-ycf-approved]) {
+html:not([data-ycf-off])
+  :is(
+    ytd-comment-thread-renderer,
+    ytd-comment-view-model,
+    yt-comment-view-model,
+    ytd-comment-renderer
+  ):not([data-ycf-approved]) {
   visibility: hidden !important;
   opacity: 0 !important;
   pointer-events: none !important;

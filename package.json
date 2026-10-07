@@ -4,9 +4,21 @@
   "private": true,
   "license": "GPL-3.0-or-later",
   "scripts": {
-    "test": "node --test test/*.test.cjs"
+    "build": "node tools/build.mjs",
+    "test": "node --test test/*.test.cjs",
+    "lint:firefox": "addons-linter dist/firefox --output json",
+    "format": "prettier --write src tools test demo docs *.md *.json .github",
+    "format:check": "prettier --check src tools test demo docs *.md *.json .github",
+    "demo": "node tools/demo-server.cjs",
+    "build:safari": "node tools/safari.mjs",
+    "source": "node tools/source-bundle.mjs",
+    "check": "npm run build && npm test && npm run lint:firefox"
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=22.13.0"
+  },
+  "devDependencies": {
+    "addons-linter": "10.13.0",
+    "prettier": "3.9.9"
   }
 }
