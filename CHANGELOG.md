@@ -19,6 +19,8 @@
   warnings), local UI/lifecycle checks and a successful Safari host build.
 - Add CI, readable source formatting, installation/privacy/maintenance documents,
   contribution and security policies, and real incremental Git history.
+- Verify the extracted source builds all three packages byte-for-byte offline
+  and passes the full regression suite; keep this check in CI.
 - Live combined-build Chromium/Firefox/Safari verification, permanent Firefox
   signing and Safari signing/notarization remain pending. This is a preview.
 

@@ -62,6 +62,7 @@ npm run demo           # Local UI adapter and comment lifecycle fixture on :8770
 npm run build:safari   # Optional macOS host build; requires Xcode
 git submodule update --init --recursive  # Needed for source releases / engine work
 npm run source         # Complete source bundle; run after committing changes
+npm run verify:source  # Rebuild extracted source offline and compare packages
 ```
 
 The source release includes the exact cached engine packages, upstream and nested

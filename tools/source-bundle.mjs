@@ -70,7 +70,9 @@ execFileSync('tar', [
 const digest = createHash('sha256')
   .update(await readFile(archive))
   .digest('hex');
-await writeFile(path.join(root, 'dist/SHA256SUMS'), `${digest}  ${path.basename(archive)}\n`, {
-  flag: 'a',
-});
+const sumsFile = path.join(root, 'dist/SHA256SUMS');
+const previous = (await readFile(sumsFile, 'utf8'))
+  .split('\n')
+  .filter((line) => line && !line.endsWith(`  ${path.basename(archive)}`));
+await writeFile(sumsFile, [...previous, `${digest}  ${path.basename(archive)}`].join('\n') + '\n');
 console.log(`Source bundle: ${archive}`);

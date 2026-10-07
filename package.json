@@ -12,6 +12,7 @@
     "demo": "node tools/demo-server.cjs",
     "build:safari": "node tools/safari.mjs",
     "source": "node tools/source-bundle.mjs",
+    "verify:source": "node tools/verify-source.mjs",
     "check": "npm run build && npm test && npm run lint:firefox"
   },
   "engines": {

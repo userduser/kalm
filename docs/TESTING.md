@@ -6,6 +6,7 @@
 | ------------------------------------ | ------------------------------- | --------------------------------------------------------------------------------------------------- |
 | Node regressions                     | 62 pass                         | Body rules, bios/shelves/cache, startup bridges, native API contract                                |
 | Three browser packages               | Pass                            | Platform manifests, DNR data, world ordering and engine-file preservation                           |
+| Downloadable source rebuild          | Pass                            | Three byte-identical packages offline; 62 extracted-source tests pass                               |
 | Local browser comment lifecycle      | Pass                            | 0 unchecked/rejected visible frames; both loading controls settle; 4 profile requests for 3 authors |
 | Compact UI interactions              | Pass                            | Add/remove sites and keywords, persistence, collapsed list, slider and toolbar messages             |
 | Mozilla add-on validator             | Pass, 12 upstream warnings      | Static validation; not Mozilla signing or native installation                                       |

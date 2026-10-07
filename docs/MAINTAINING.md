@@ -38,7 +38,8 @@ plus the corresponding engine/compiler/library source and unmodified rule data.
 2. `npm ci`, `npm run check`, `npm run format:check`; inspect all reports.
 3. Commit every release source/document change. Confirm `git status` is clean.
 4. `npm run source` includes tracked files, pinned nested sources and cached
-   original packages. Verify an extracted source bundle builds offline.
+   original packages. `npm run verify:source` extracts the archive, blocks the
+   build's download API, checks identical ZIPs and runs extracted-source tests.
 5. Tag the exact commit and upload three ZIPs, complete source archive,
    `SHA256SUMS` and validation reports. Mark unverified releases as prereleases.
 6. Obtain Kalm-specific AMO signing for permanent Firefox installation and a
