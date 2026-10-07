@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Clarify local website URL, page-content and request-match handling in the
+  privacy policy for the Chrome Web Store submission.
+
 ## 0.1.0 — 2026-10-07 (development preview)
 
 - Introduce Kalm: original vector logo, bundled Google Sans and compact dark UI.

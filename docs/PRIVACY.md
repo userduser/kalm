@@ -1,8 +1,18 @@
 # Privacy
 
+Last updated: 7 October 2026.
+
 Kalm has no account, analytics, telemetry or hosted screening service. It does
 not send comments, keywords, blocklist entries or browsing history to Kalm's
 maintainers. The UI and fonts load from the extension package.
+
+To filter content, Kalm processes the current website's URL, network request
+matches, page elements, YouTube comments and public channel information on your
+device. Public channel information can include channel IDs, handles, descriptions
+and links. Website URLs select the site's filtering level; page content and
+request matches determine what to block or hide. The toolbar can show a local
+blocked-request count. Kalm does not build or transmit a browsing-history log,
+record keystrokes, or collect private messages or login credentials.
 
 The browser's declarative request engine applies bundled ad/tracker rules.
 Enabling imported filter lists in the advanced engine dashboard fetches the URLs
@@ -24,6 +34,13 @@ These values are serialized into the YouTube page world because screening must
 run before YouTube renders comments. The page can observe/interfere with this
 code and its settings; do not enter secrets as keywords. This is filtering for
 the user, not a security boundary against the website itself.
+
+Kalm uses this information only for its content-filtering features, consistent
+with the Chrome Web Store User Data Policy, including its Limited Use
+requirements. It does not sell user data, use it for advertising, determine
+creditworthiness, or make it available for maintainers to read. Public information
+that you choose to include in a GitHub issue is handled by GitHub under its own
+policies; reporting an issue is optional.
 
 The comment switch stops profile screening and releases the visibility gate on
 the next page reload. Comment options include a Reload button. You can delete
