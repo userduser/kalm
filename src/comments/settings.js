@@ -2,6 +2,9 @@
   "use strict";
   const KEY = "ycf.blockedDomains.v1";
   const ENABLED_KEY = "ycf.enabled.v1";
+  const KEYWORDS_KEY = "kalm.keywords.v1";
+  const LINKS_KEY = "kalm.allLinks.v1";
+  const CHANNELS_KEY = "kalm.channelLinks.v1";
   const DEFAULT_DOMAINS = Object.freeze(["tinyurl.com", "blogspot.com"]);
   const MAX_DOMAINS = 256;
 
@@ -27,14 +30,29 @@
     if (!Array.isArray(values) || values.length > MAX_DOMAINS) throw new Error(`Use no more than ${MAX_DOMAINS} sites.`);
     return [...new Set(values.map(normalizeDomain))].sort();
   }
+  function normalizeKeyword(value) {
+    if (typeof value !== "string") throw new Error("Enter a keyword or phrase.");
+    const term = value.normalize("NFKC").trim().replace(/\s+/gu, " ").toLowerCase();
+    if (!term || term.length > 120 || /[\u0000-\u001f\u007f]/u.test(term)) throw new Error("Use a keyword or phrase of up to 120 characters.");
+    return term;
+  }
+  function normalizeKeywords(values) {
+    if (!Array.isArray(values) || values.length > MAX_DOMAINS) throw new Error(`Use no more than ${MAX_DOMAINS} keywords.`);
+    return [...new Set(values.map(normalizeKeyword))].sort();
+  }
+  function boolean(data, key, fallback) {
+    const value = data[key] === undefined ? fallback : data[key];
+    if (typeof value !== "boolean") throw new Error(`Invalid setting: ${key === ENABLED_KEY ? "master switch" : key}.`);
+    return value;
+  }
   function createStore(area) {
     const store = {
       readConfig: async () => {
         if (!area) throw new Error("Settings storage is unavailable.");
-        const data = await area.get([KEY, ENABLED_KEY]);
-        const enabled = data[ENABLED_KEY] === undefined ? true : data[ENABLED_KEY];
-        if (typeof enabled !== "boolean") throw new Error("Invalid master switch setting.");
-        return { domains: normalizeList(data[KEY] === undefined ? DEFAULT_DOMAINS : data[KEY]), enabled };
+        const data = await area.get([KEY, ENABLED_KEY, KEYWORDS_KEY, LINKS_KEY, CHANNELS_KEY]);
+        return { domains: normalizeList(data[KEY] === undefined ? DEFAULT_DOMAINS : data[KEY]),
+          enabled: boolean(data, ENABLED_KEY, true), keywords: normalizeKeywords(data[KEYWORDS_KEY] ?? []),
+          blockAllLinks: boolean(data, LINKS_KEY, false), blockChannelLinks: boolean(data, CHANNELS_KEY, true) };
       },
       read: async () => (await store.readConfig()).domains,
       write: async domains => {
@@ -49,6 +67,16 @@
         await area.set({ [ENABLED_KEY]: enabled });
         return enabled;
       },
+      writeKeywords: async values => {
+        const keywords = normalizeKeywords(values);
+        if (!area) throw new Error("Settings storage is unavailable.");
+        await area.set({ [KEYWORDS_KEY]: keywords }); return keywords;
+      },
+      writeToggle: async (key, value) => {
+        if (![LINKS_KEY, CHANNELS_KEY].includes(key) || typeof value !== "boolean") throw new Error("Invalid toggle.");
+        if (!area) throw new Error("Settings storage is unavailable.");
+        await area.set({ [key]: value }); return value;
+      },
     };
     return store;
   }
@@ -60,7 +88,7 @@
       set: data => { for (const [key, value] of Object.entries(data)) storage.setItem(key, JSON.stringify(value)); },
     });
   }
-  const api = { KEY, ENABLED_KEY, DEFAULT_DOMAINS, MAX_DOMAINS, normalizeDomain, normalizeList, createStore, createPageStore };
+  const api = { KEY, ENABLED_KEY, KEYWORDS_KEY, LINKS_KEY, CHANNELS_KEY, DEFAULT_DOMAINS, MAX_DOMAINS, normalizeDomain, normalizeList, normalizeKeyword, normalizeKeywords, createStore, createPageStore };
   if (typeof module === "object" && module.exports) module.exports = api;
   else globalThis.__YTCommentFilterSettings = Object.freeze(api);
 })();

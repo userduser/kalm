@@ -1,7 +1,7 @@
 (function () {
   "use strict";
   // This file runs in the isolated extension world, which can read storage.
-  // The page world receives only serialized domains, never extension APIs.
+  // The page world receives only serialized comment settings, never extension APIs.
   function connect(doc, store, makeEvent = (name, detail) => new CustomEvent(name, { detail })) {
     const loaded = store.readConfig().then(config => JSON.stringify(config), () => JSON.stringify({ error: true }));
     const send = () => loaded.then(detail => doc.dispatchEvent(makeEvent("ycf-settings-response-v1", detail)));

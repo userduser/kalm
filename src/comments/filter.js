@@ -1,8 +1,8 @@
 (function () {
   "use strict";
 
-  const VERSION = "0.7.0";
-  const DEFAULTS = { blockedDomains: ["tinyurl.com", "blogspot.com"], blockChannelLinks: true, urlCacheSize: 256 };
+  const VERSION = "0.1.0";
+  const DEFAULTS = { blockedDomains: ["tinyurl.com", "blogspot.com"], blockedKeywords: [], blockAllLinks: false, blockChannelLinks: true, urlCacheSize: 256 };
   const isObject = value => value !== null && typeof value === "object";
 
   function createFilter(options = {}) {
@@ -23,8 +23,14 @@
       `(?:^|[^\\p{L}\\p{N}_@.-])(?:[\\p{L}\\p{N}-]+\\.)*(?:${escapedDomains.join("|")})(?=$|[^\\p{L}\\p{N}_.-])`, "iu"
     ) : null;
     const urls = new Map();
+    const escape = value => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const terms = config.blockedKeywords.map(term => escape(term.normalize("NFKC").trim().replace(/\s+/gu, " ")));
+    const keywords = terms.length ? new RegExp(`(?:^|[^\\p{L}\\p{N}_])(?:${terms.join("|")})(?=$|[^\\p{L}\\p{N}_])`, "iu") : null;
+    // Bare domains must have an alphabetic TLD. Ignore addresses inside emails,
+    // file extensions/version numbers and ordinary prose about URL prefixes.
+    const bareUrl = /(?:^|[^\p{L}\p{N}_@.-])(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+(?:com|org|net|edu|gov|io|co|me|app|dev|xyz|info|biz|online|site|link|click|top|live|uk|de|fr|ca|au|us)(?=$|[^\p{L}\p{N}_@.-])/iu;
     const seenPayloads = new WeakSet();
-    const counters = { batches: 0, screened: 0, removed: 0, channelLinks: 0, blockedDomains: 0, blockedAuthors: 0, unresolvedViews: 0, errors: 0, totalMs: 0 };
+    const counters = { batches: 0, screened: 0, removed: 0, channelLinks: 0, blockedDomains: 0, blockedAuthors: 0, allLinks: 0, keywords: 0, unresolvedViews: 0, errors: 0, totalMs: 0 };
 
     function classifyUrl(raw) {
       if (typeof raw !== "string" || !raw) return null;
@@ -35,6 +41,9 @@
         for (let depth = 0; depth < 3; depth++) {
           const host = url.hostname.toLowerCase().replace(/\.$/, "");
           const youtube = host === "youtube.com" || host.endsWith(".youtube.com");
+          // Only body navigation is passed here; author anchors are separate.
+          if (config.blockAllLinks && /^https?:$/.test(url.protocol) &&
+            (raw.startsWith("/") || /^(?:https?:\/\/|www\.)/i.test(raw))) reason = "allLinks";
           if (youtube && url.pathname === "/redirect") {
             const destination = url.searchParams.get("q") || url.searchParams.get("url");
             if (destination) { url = new URL(destination, url); continue; }
@@ -61,6 +70,7 @@
 
     function classifyCommand(command, depth = 0) {
       if (!isObject(command) || depth > 5) return null;
+      if (config.blockAllLinks && (command.urlEndpoint?.url || command.urlCommand?.url || command.browseEndpoint || command.watchEndpoint)) return "allLinks";
       if (config.blockChannelLinks && /^UC[\w-]+$/.test(command.browseEndpoint?.browseId || "")) return "channelLinks";
       const rawUrls = [command.urlEndpoint?.url, command.urlCommand?.url,
         command.commandMetadata?.webCommandMetadata?.url, command.browseEndpoint?.canonicalBaseUrl];
@@ -93,6 +103,8 @@
       const text = typeof content === "string" ? content :
         content.content ?? content.simpleText ?? (content.runs || []).map(run => run.text || "").join("");
       if (typeof text !== "string") return null;
+      if (keywords?.test(text.normalize("NFKC").replace(/\s+/gu, " "))) return "keywords";
+      if (config.blockAllLinks && bareUrl.test(text)) return "allLinks";
       // Actual links and navigation commands identify mentions. An email or bare @word does not.
       // Inspect complete URLs first, so a domain appearing only in an allowed URL's
       // path/query cannot accidentally match the bare-domain rule.
@@ -279,7 +291,8 @@
   if (globalThis.__YTCommentFilter) return;
   const config = globalThis.__YT_COMMENT_FILTER_RULES__;
   const filter = createFilter({ ...config, getAuthorDecision: id => globalThis.__YTCommentFilterProfiles?.peek(id) });
-  const profileMatcher = createFilter({ ...config, blockChannelLinks: false });
+  // Body-only switches never turn an ordinary author bio into a rejection.
+  const profileMatcher = createFilter({ ...config, blockChannelLinks: false, blockAllLinks: false, blockedKeywords: [] });
   const installation = config.enabled === false ? { hooks: [], restore: () => {} } : installHooks(globalThis, filter);
   Object.defineProperty(globalThis, "__YTCommentFilter", { configurable: true, value: Object.freeze({
     version: VERSION,

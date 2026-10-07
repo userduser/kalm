@@ -2,18 +2,18 @@
   "use strict";
   const EVENT = "ycf-settings-response-v1";
   function receive(event) {
-    if (typeof event.detail !== "string" || event.detail.length > 70000) return;
+    if (typeof event.detail !== "string" || event.detail.length > 120000) return;
     try {
       const data = JSON.parse(event.detail);
       if (data.error) {
-        console.warn("YouTube Comment Filter: blocklist could not be loaded. Comments remain hidden; reload this tab to retry.");
+        console.warn("Kalm: blocklist could not be loaded. Comments remain hidden; reload this tab to retry.");
         return;
       }
-      globalThis.__YTCommentFilterStart(data.domains, data.enabled === undefined ? true : data.enabled);
+      globalThis.__YTCommentFilterStart(data.domains, data.enabled === undefined ? true : data.enabled, data);
       document.removeEventListener(EVENT, receive);
     } catch (error) {
       // Invalid settings and startup errors never release unchecked comments.
-      console.warn("YouTube Comment Filter: startup failed. Comments remain hidden; reload the extension and this tab.", error);
+      console.warn("Kalm: startup failed. Comments remain hidden; reload the extension and this tab.", error);
     }
   }
   document.addEventListener(EVENT, receive);

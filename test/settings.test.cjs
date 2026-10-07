@@ -34,9 +34,9 @@ test("master switch defaults on and persists independently from the site list", 
   assert.equal((await store.readConfig()).enabled, true);
   await store.writeEnabled(false);
   await store.write(["example.org"]);
-  assert.deepEqual(await store.readConfig(), { domains: ["example.org"], enabled: false });
+  assert.deepEqual(await store.readConfig(), { domains: ["example.org"], enabled: false, keywords: [], blockAllLinks: false, blockChannelLinks: true });
   await store.writeEnabled(true);
-  assert.deepEqual(await store.readConfig(), { domains: ["example.org"], enabled: true });
+  assert.deepEqual(await store.readConfig(), { domains: ["example.org"], enabled: true, keywords: [], blockAllLinks: false, blockChannelLinks: true });
   await assert.rejects(store.writeEnabled("false"));
   data[settings.ENABLED_KEY] = "false";
   await assert.rejects(store.readConfig(), /master switch/);
@@ -46,7 +46,7 @@ test("Safari settings preserve both the master switch and saved domains", async 
   const data = new Map(), storage = { getItem: key => data.get(key) ?? null, setItem: (key, value) => data.set(key, value) };
   const store = settings.createPageStore(storage);
   await store.writeEnabled(false); await store.write(["example.org"]);
-  assert.deepEqual(await settings.createPageStore(storage).readConfig(), { domains: ["example.org"], enabled: false });
+  assert.deepEqual(await settings.createPageStore(storage).readConfig(), { domains: ["example.org"], enabled: false, keywords: [], blockAllLinks: false, blockChannelLinks: true });
   assert.equal(data.get(settings.ENABLED_KEY), "false");
 });
 
