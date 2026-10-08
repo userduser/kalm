@@ -40,6 +40,13 @@ $('#comments-enabled').addEventListener('change', async () => {
     input.disabled = false;
   }
 });
+$('.donate').addEventListener('click', (event) => {
+  event.preventDefault();
+  webext.tabs
+    .create({ url: event.currentTarget.href })
+    .then(() => window.close())
+    .catch((error) => status(error.message, true));
+});
 for (const [id, section] of [
   ['ad-setup', 'ads'],
   ['comment-setup', 'comments'],

@@ -86,6 +86,13 @@ download. Kalm adds a small interface and comment filter rather than a second
 blocking engine or a background polling service. Profile checks still add latency
 for uncached authors; comments remain hidden when a profile cannot be verified.
 
+## Support Kalm
+
+[Donate to protect kids and older adults](https://kalm-support.pages.dev/).
+Optional contributions support Kalm's development and maintenance. All features
+remain free. The support site and Stripe checkout are separate from this repository;
+the extension only opens a link and does not handle payments or payment details.
+
 ## License and credits
 
 GPL-3.0-or-later; see [LICENSE](LICENSE), [NOTICE](NOTICE) and
