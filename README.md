@@ -88,6 +88,10 @@ for uncached authors; comments remain hidden when a profile cannot be verified.
 
 ## Support Kalm
 
+Use **Feedback** in ad or comment setup to report a bug, request a feature or send
+another message. Reports go to the maintainer's private GitHub inbox. No account
+is needed, and no browsing data is automatically included.
+
 [Donate](https://kalm-support.pages.dev/).
 Optional contributions support Kalm's development and maintenance. All features
 remain free. The support site and Stripe checkout are separate from this repository;

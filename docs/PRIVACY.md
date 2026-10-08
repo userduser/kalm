@@ -1,10 +1,10 @@
 # Privacy
 
-Last updated: 7 October 2026.
+Last updated: 8 October 2026.
 
 Kalm has no account, analytics, telemetry or hosted screening service. It does
-not send comments, keywords, blocklist entries or browsing history to Kalm's
-maintainers. The UI and fonts load from the extension package.
+not automatically send comments, keywords, blocklist entries or browsing history
+to Kalm's maintainers. The UI and fonts load from the extension package.
 
 To filter content, Kalm processes the current website's URL, network request
 matches, page elements, YouTube comments and public channel information on your
@@ -41,6 +41,17 @@ requirements. It does not sell user data, use it for advertising, determine
 creditworthiness, or make it available for maintainers to read. Public information
 that you choose to include in a GitHub issue is handled by GitHub under its own
 policies; reporting an issue is optional.
+
+The optional Feedback button opens a separate hosted form. Only the message and
+type you choose, the setup section and Kalm's version are sent. Reports become
+labelled issues in a private GitHub inbox, accessible to the maintainer; they are
+not published as public Kalm issues. No reply address or browsing data is
+automatically attached. Cloudflare hosts the form, uses your IP address for
+short-lived rate limits and may retain operational records. The service caches
+only request IDs and message hashes for up to a day to reduce duplicate sends.
+GitHub retains reports until the maintainer deletes them. Do not include passwords,
+payment details or personal information. Sending feedback is entirely optional;
+opening setup sends no requests to this service.
 
 The comment switch stops profile screening and releases the visibility gate on
 the next page reload. Comment options include a Reload button. You can delete

@@ -189,6 +189,14 @@ $('#default-mode').addEventListener('change', async () => {
 $('#lists').addEventListener('click', () =>
   client.dashboard('rulesets').catch((error) => status(error.message, true)),
 );
+document.querySelectorAll('[data-feedback]').forEach((button) => {
+  button.addEventListener('click', () => {
+    const url = new URL('https://kalm-feedback.axion-164.workers.dev/');
+    url.searchParams.set('area', button.dataset.feedback);
+    url.searchParams.set('version', webext.runtime.getManifest().version);
+    webext.tabs.create({ url: url.href }).catch((error) => status(error.message, true));
+  });
+});
 (async () => {
   $('#version').textContent = webext.runtime.getManifest().version;
   config = await store.readConfig();

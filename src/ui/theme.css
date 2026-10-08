@@ -343,6 +343,11 @@ small {
 .pane > p {
   margin-bottom: 16px;
 }
+.pane .feedback {
+  margin-top: 24px;
+  color: var(--muted);
+  font-size: 13px;
+}
 .stack {
   display: grid;
   gap: 10px;
