@@ -88,7 +88,7 @@ for uncached authors; comments remain hidden when a profile cannot be verified.
 
 ## Support Kalm
 
-[Donate to protect kids and older adults](https://kalm-support.pages.dev/).
+[Donate](https://kalm-support.pages.dev/).
 Optional contributions support Kalm's development and maintenance. All features
 remain free. The support site and Stripe checkout are separate from this repository;
 the extension only opens a link and does not handle payments or payment details.

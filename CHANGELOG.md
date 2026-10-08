@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Shorten the popup donation button to “Donate.”
 - Add one optional donation button to the main popup, opening the separate
   Kalm support site at https://kalm-support.pages.dev.
 - Clarify local website URL, page-content and request-match handling in the
