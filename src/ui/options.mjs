@@ -191,7 +191,7 @@ $('#lists').addEventListener('click', () =>
 );
 document.querySelectorAll('[data-feedback]').forEach((button) => {
   button.addEventListener('click', () => {
-    const url = new URL('https://kalm-feedback.axion-164.workers.dev/');
+    const url = new URL('https://kalm-feedback.ahamed-a-1235.workers.dev/');
     url.searchParams.set('area', button.dataset.feedback);
     url.searchParams.set('version', webext.runtime.getManifest().version);
     webext.tabs.create({ url: url.href }).catch((error) => status(error.message, true));

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Move feedback hosting to the maintainer's personal Cloudflare account.
+
 - Add a small Feedback button in ad and comment setup, opening a private form
   for bug reports, feature requests and other messages without a GitHub login.
 - Shorten the popup donation button to “Donate.”
