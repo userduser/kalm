@@ -5,7 +5,7 @@
   const channelId = (id) => typeof id === 'string' && /^UC[\w-]{22}$/.test(id);
   // Changing profile rules must also invalidate previously saved approvals.
   const profileSignature = (domains) =>
-    JSON.stringify([4, [...domains].map((x) => x.toLowerCase()).sort()]);
+    JSON.stringify([5, [...domains].map((x) => x.toLowerCase()).sort()]);
 
   function hasChannelSection(data, expectedId) {
     const tabs =
@@ -107,6 +107,9 @@
     signature,
     now = Date.now,
     ttlMs = 86400000,
+    // A previously clean author can add a promotion shelf or bot link later.
+    // Refresh approvals sooner, only when their comments are encountered again.
+    approvalTtlMs = Math.min(ttlMs, 1800000),
     maxEntries = 2000,
     concurrency = 3,
   }) {
@@ -126,6 +129,7 @@
     let active = 0,
       stopped = false,
       generation = 0;
+    const lifetime = (blocked) => (blocked ? ttlMs : Math.min(ttlMs, approvalTtlMs));
     function valid(entry) {
       return (
         entry &&
@@ -134,7 +138,7 @@
         entry.signature === signature &&
         Number.isFinite(entry.expiresAt) &&
         entry.expiresAt > now() &&
-        entry.expiresAt <= now() + ttlMs + 60000
+        entry.expiresAt <= now() + lifetime(entry.blocked) + 60000
       );
     }
     function insert(entry) {
@@ -174,7 +178,7 @@
             const entry = {
               id: job.id,
               blocked: result.blocked,
-              expiresAt: now() + ttlMs,
+              expiresAt: now() + lifetime(result.blocked),
               signature,
             };
             insert(entry);

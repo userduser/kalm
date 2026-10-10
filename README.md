@@ -4,7 +4,7 @@
 
 A quieter web. Ad blocking and YouTube comment screening, with simple controls.
 
-**0.1.0 is a development preview.** Packages and automated checks are available
+**0.1.1 is a development preview.** Packages and automated checks are available
 for Chromium, Firefox and Safari. Live Firefox/Safari verification and store
 signing are pending; do not describe this release as fully tested in those browsers.
 
@@ -18,7 +18,8 @@ signing are pending; do not describe this release as fully tested in those brows
 - Optional all-links blocking and literal word/phrase blocking.
 - One shared list for bot domains and keywords, collapsed by default.
 - Author bios and visible channel promotion shelves are screened with bounded
-  concurrency and a 24-hour decision cache. External links, linked profiles
+  concurrency. Passed authors are cached for 30 minutes, blocked authors for
+  24 hours; checks repeat only when comments are encountered. External links, linked profiles
   and avatars are not fetched for screening.
 - Local settings, bundled fonts, no analytics, account or Kalm server.
 

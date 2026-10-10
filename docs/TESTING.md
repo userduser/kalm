@@ -1,5 +1,19 @@
 # Verification and release status
 
+## 0.1.1 development build — 2026-10-10
+
+- 65 regressions pass, including the captured `@Raisyaangel` promotion shelf,
+  expiration of passed-author approvals after 30 minutes, and cache migration.
+- A fresh public YouTube browse response for `@Raisyaangel` is rejected by the
+  existing shelf rule after one parent-profile request. No linked profiles or
+  avatar images are fetched. Its three visible channel cards use the supported
+  `gridChannelRenderer` schema.
+- Chromium, Firefox and Safari packages build successfully. Firefox static
+  validation reports 0 errors and the same 12 upstream warnings.
+- The reported miss in the installed Chrome extension has not been reproduced.
+  An older build or saved approval may explain it; the Chrome diagnostic is
+  still needed to establish the cause. Native Firefox/Safari checks remain pending.
+
 ## 0.1.0 preview — 2026-10-07
 
 | Check                                | Result                          | Scope                                                                                               |

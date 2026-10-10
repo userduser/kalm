@@ -11,6 +11,8 @@ const {
   profileSignature,
 } = require('../src/comments/profiles.js');
 const channelSection = require('./fixtures/channel-section.json');
+// Public browse response captured on 2026-10-10; unrelated metadata stripped.
+const raisyaangel = require('./fixtures/raisyaangel.json');
 const A = 'UC' + 'a'.repeat(22),
   B = 'UC' + 'b'.repeat(22),
   C = 'UC' + 'c'.repeat(22);
@@ -238,6 +240,94 @@ test('one lookup per author, shared in-flight checks, and bounded concurrency', 
   assert.equal(results[0], results[1]);
   assert.equal((await service.check(B)).blocked, true);
   assert.equal(service.stats().lookups, 3);
+});
+
+test('the Raisyaangel channel promotion shelf blocks without fetching linked profiles', async () => {
+  const id = raisyaangel.metadata.channelMetadataRenderer.externalId;
+  const requests = [];
+  const loader = createYoutubeLoader(
+    {
+      ytcfg: { get: () => ({ client: { clientVersion: 'test' } }) },
+      fetch: async (url, options) => {
+        requests.push({ url, options });
+        return { ok: true, json: async () => structuredClone(raisyaangel) };
+      },
+    },
+    createFilter({ blockedDomains: [], blockChannelLinks: false }).classifyContent,
+  );
+  assert.deepEqual(await loader.lookup(id), {
+    complete: true,
+    blocked: true,
+    id,
+    reason: 'channelSection',
+  });
+  assert.equal(requests.length, 1);
+  assert.equal(JSON.parse(requests[0].options.body).browseId, id);
+  assert.equal(requests[0].options.credentials, 'omit');
+});
+
+test('passed authors are rechecked after 30 minutes and newly added shelves are rejected', async () => {
+  const id = raisyaangel.metadata.channelMetadataRenderer.externalId;
+  let time = 1000;
+  const saved = [],
+    requests = [];
+  const service = createProfileService({
+    signature: profileSignature([]),
+    now: () => time,
+    storage: { save: async (entry) => saved.push(entry) },
+    lookup: async (author) => {
+      requests.push(author);
+      if (author === B) return { blocked: true };
+      return readProfile(
+        requests.filter((value) => value === id).length === 1 ? about(id) : raisyaangel,
+        id,
+        matcher,
+      );
+    },
+  });
+  assert.equal((await service.check(id)).blocked, false);
+  assert.equal((await service.check(B)).blocked, true);
+  await flush();
+  assert.equal(saved[0].expiresAt, 1000 + 30 * 60000);
+  assert.equal(saved[1].expiresAt, 1000 + 24 * 3600000);
+  time += 30 * 60000 - 1;
+  assert.equal((await service.check(id)).blocked, false);
+  assert.deepEqual(requests, [id, B]);
+  time++;
+  assert.equal(service.peek(id), undefined);
+  assert.equal((await service.check(id)).blocked, true);
+  assert.equal((await service.check(B)).blocked, true);
+  assert.deepEqual(requests, [id, B, id]);
+  assert.equal(service.peek(id).expiresAt, time + 24 * 3600000);
+});
+
+test('the update discards old 24-hour approvals while preserving current valid decisions', async () => {
+  const id = raisyaangel.metadata.channelMetadataRenderer.externalId;
+  const domains = ['blogspot.com', 'tinyurl.com'];
+  const signature = profileSignature(domains);
+  const requests = [];
+  const service = createProfileService({
+    signature,
+    now: () => 1000,
+    storage: {
+      load: async () => [
+        { id, signature: JSON.stringify([4, domains]), blocked: false, expiresAt: 86401000 },
+        // Overlong approvals are invalid even if their signature matches.
+        { id: A, signature, blocked: false, expiresAt: 86401000 },
+        { id: B, signature, blocked: true, expiresAt: 86401000 },
+        { id: C, signature, blocked: false, expiresAt: 1801000 },
+      ],
+    },
+    lookup: async (author) => {
+      requests.push(author);
+      return author === id ? readProfile(raisyaangel, id, matcher) : { blocked: false };
+    },
+  });
+  assert.equal((await service.check(id)).blocked, true);
+  assert.equal((await service.check(A)).blocked, false);
+  assert.equal((await service.check(B)).blocked, true);
+  assert.equal((await service.check(C)).blocked, false);
+  assert.deepEqual(requests, [id, A]);
 });
 
 test('cached decisions expire, changed rules invalidate saved decisions, and cache size is bounded', async () => {

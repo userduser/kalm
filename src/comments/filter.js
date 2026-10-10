@@ -3,7 +3,7 @@
 (function () {
   'use strict';
 
-  const VERSION = '0.1.0';
+  const VERSION = '0.1.1';
   const DEFAULTS = {
     blockedDomains: ['tinyurl.com', 'blogspot.com'],
     blockedKeywords: [],

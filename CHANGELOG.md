@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Refresh passed author profiles after 30 minutes of caching instead of 24 hours,
+  only when their comments are encountered again. Keep blocked profiles cached
+  for 24 hours and invalidate older saved approvals on update.
+- Add a captured `@Raisyaangel` profile regression for channel promotion shelves.
+
 - Move feedback hosting to the maintainer's personal Cloudflare account.
 
 - Add a small Feedback button in ad and comment setup, opening a private form

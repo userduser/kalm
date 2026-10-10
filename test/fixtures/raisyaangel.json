@@ -1,0 +1,85 @@
+{
+  "metadata": {
+    "channelMetadataRenderer": {
+      "externalId": "UCXXoIsg9hYWAu7oMCWf6KUg",
+      "title": "Raisya angel",
+      "description": ""
+    }
+  },
+  "contents": {
+    "twoColumnBrowseResultsRenderer": {
+      "tabs": [
+        {
+          "tabRenderer": {
+            "title": "Home",
+            "selected": true,
+            "endpoint": {
+              "browseEndpoint": {
+                "browseId": "UCXXoIsg9hYWAu7oMCWf6KUg",
+                "canonicalBaseUrl": "/@Raisyaangel"
+              }
+            },
+            "content": {
+              "sectionListRenderer": {
+                "contents": [
+                  {
+                    "itemSectionRenderer": {
+                      "contents": [
+                        {
+                          "shelfRenderer": {
+                            "title": {
+                              "runs": [{ "text": "find your partner 💖❤😍" }]
+                            },
+                            "content": {
+                              "horizontalListRenderer": {
+                                "items": [
+                                  {
+                                    "gridChannelRenderer": {
+                                      "channelId": "UCJoaizmeiBGNlISl9Xcz8Vg",
+                                      "navigationEndpoint": {
+                                        "browseEndpoint": {
+                                          "browseId": "UCJoaizmeiBGNlISl9Xcz8Vg",
+                                          "canonicalBaseUrl": "/@SamanthaBentley-s8l"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "gridChannelRenderer": {
+                                      "channelId": "UCisAWkixGqJfrLrU-yIFfGQ",
+                                      "navigationEndpoint": {
+                                        "browseEndpoint": {
+                                          "browseId": "UCisAWkixGqJfrLrU-yIFfGQ",
+                                          "canonicalBaseUrl": "/@CeuliniCarol"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "gridChannelRenderer": {
+                                      "channelId": "UCTc8azZEyCh52MbrnNIS6Hw",
+                                      "navigationEndpoint": {
+                                        "browseEndpoint": {
+                                          "browseId": "UCTc8azZEyCh52MbrnNIS6Hw",
+                                          "canonicalBaseUrl": "/@Angelina-s4s6z"
+                                        }
+                                      }
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

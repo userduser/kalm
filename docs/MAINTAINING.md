@@ -67,5 +67,7 @@ screened independently of text formatting.
 
 The profile cache signature depends on domain rules, because words/all-links
 apply only to bodies. If profile rules change, bump `profileSignature` to
-invalidate stored approvals. Preserve the visibility gate and native list nodes:
+invalidate stored approvals. Passed profiles are cached for up to 30 minutes,
+blocked profiles for up to 24 hours. Refreshes happen when comments are encountered,
+without background polling. Preserve the visibility gate and native list nodes:
 detaching a YouTube-owned renderer can leave pagination/loading state stuck.

@@ -6,7 +6,7 @@ profile and report the browser version with any failures.
 
 ## Chromium
 
-1. Extract `kalm-0.1.0-chromium.zip` into a folder.
+1. Extract `kalm-0.1.1-chromium.zip` into a folder.
 2. Open `chrome://extensions`, enable Developer mode, choose **Load unpacked**
    and select the extracted folder containing `manifest.json`.
 3. Pin Kalm, open a website and confirm the popup says **Ready**.
@@ -15,7 +15,7 @@ profile and report the browser version with any failures.
 
 ## Firefox 140+
 
-1. Extract `kalm-0.1.0-firefox.zip`.
+1. Extract `kalm-0.1.1-firefox.zip`.
 2. Open `about:debugging#/runtime/this-firefox`.
 3. Choose **Load Temporary Add-on** and select the extracted `manifest.json`.
 4. Grant website access when requested and reload YouTube after installation.
@@ -30,7 +30,7 @@ enforcement settings. [Mozilla temporary installation](https://extensionworkshop
 1. Open Safari Settings → Advanced and enable **Show features for web developers**.
 2. Open Safari Settings → Developer → **Add Temporary Extension** (or Develop →
    Web Extension → **Add Temporary Extension**, depending on Safari's version).
-3. Select `kalm-0.1.0-safari.zip` or its extracted folder containing `manifest.json`.
+3. Select `kalm-0.1.1-safari.zip` or its extracted folder containing `manifest.json`.
 4. Enable Kalm in Extensions, allow access to the websites you want to filter,
    and reload YouTube.
 
