@@ -78,11 +78,6 @@ for (const [id, section] of [
     $('#hostname').textContent = 'Open a website';
     $('#mode-name').textContent = '—';
   }
-  $('#connection').replaceChildren();
-  const dot = document.createElement('span');
-  dot.className = 'indicator';
-  $('#connection').append(dot, 'Ready');
 })().catch((error) => {
-  $('#connection').textContent = 'Connection failed';
   status(error.message, true);
 });

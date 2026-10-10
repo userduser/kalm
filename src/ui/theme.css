@@ -267,7 +267,7 @@ small {
 }
 .popup footer {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   margin-top: 10px;
   font-size: 11px;
@@ -277,31 +277,44 @@ small {
   color: var(--muted);
 }
 .popup .donate {
-  display: block;
-  padding: 10px 8px;
-  border: 1px solid var(--line);
-  border-radius: 9px;
-  background: var(--surface);
-  color: var(--green);
-  font-size: 13px;
-  font-weight: 500;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  background: var(--green);
+  color: #123c2b;
+  font-size: 14px;
+  font-weight: 600;
   transition:
-    border-color 0.15s,
-    background 0.15s;
+    background 0.15s,
+    transform 0.15s;
 }
 .popup .donate:hover {
-  border-color: var(--green);
-  background: #203128;
+  background: #d1f9e0;
   text-decoration: none;
 }
-.indicator {
-  height: 6px;
-  width: 6px;
-  display: inline-block;
-  border-radius: 50%;
-  background: var(--green);
-  margin-right: 5px;
+.popup .donate:active {
+  transform: scale(0.98);
+}
+.popup .donate svg {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+.donate-copy {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+.donate-copy small {
+  color: #486856;
+  font-size: 11px;
+  font-weight: 400;
+}
+.popup .status:empty {
+  display: none;
 }
 .page {
   max-width: 580px;

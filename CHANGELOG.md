@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Add a bright “Buy me a coffee” popup button with a dark cup icon and muted
+  “Donate” subtitle. Rename comment controls to “Comment protection” and remove
+  the popup's Ready label.
 - Refresh passed author profiles after 30 minutes of caching instead of 24 hours,
   only when their comments are encountered again. Keep blocked profiles cached
   for 24 hours and invalidate older saved approvals on update.

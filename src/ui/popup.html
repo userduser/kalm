@@ -41,14 +41,14 @@
       </section>
       <section class="section row">
         <label class="switch"
-          ><span>YouTube comments</span
+          ><span>Comment protection</span
           ><input
             id="comments-enabled"
             type="checkbox"
             role="switch"
-            aria-label="YouTube comment filter"
+            aria-label="Comment protection"
             disabled /></label
-        ><button class="icon" id="comment-setup" aria-label="Comment filter setup">⚙</button>
+        ><button class="icon" id="comment-setup" aria-label="Comment protection setup">⚙</button>
       </section>
     </main>
     <a
@@ -56,12 +56,24 @@
       href="https://kalm-support.pages.dev/"
       target="_blank"
       rel="noopener noreferrer"
-      >Donate</a
     >
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M5 8h12v5a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5V8Z" />
+        <path d="M17 9h1a3 3 0 0 1 0 6h-1M4 21h15M8 3v2M12 2v3" />
+      </svg>
+      <span class="donate-copy"><span>Buy me a coffee</span><small>Donate</small></span>
+    </a>
     <div id="status" class="status" role="status"></div>
     <footer>
-      <span id="connection">Connecting</span
-      ><a href="options.html?section=about" id="about">About</a>
+      <a href="options.html?section=about" id="about">About</a>
     </footer>
   </body>
 </html>

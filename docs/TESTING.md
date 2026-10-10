@@ -87,6 +87,8 @@ npm run check
 npm run demo
 ```
 
+If port 8770 is in use, set another port with `KALM_DEMO_PORT=18770 npm run demo`.
+
 Visit `http://127.0.0.1:8770/demo/lifecycle-test.html` for the actual comment code
 against local metadata fixtures. `/popup-preview` and `/options-preview` use a
 clearly marked UI-only browser API adapter; they do not run a native ad blocker.

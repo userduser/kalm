@@ -149,6 +149,7 @@ const server = http.createServer((req, res) => {
   });
   fs.createReadStream(full).pipe(res);
 });
-server.listen(8770, '127.0.0.1', () =>
-  console.log('Kalm local checks: http://127.0.0.1:8770/options-preview?section=comments&tab=7'),
+const port = Number(process.env.KALM_DEMO_PORT || 8770);
+server.listen(port, '127.0.0.1', () =>
+  console.log(`Kalm local checks: http://127.0.0.1:${port}/options-preview?section=comments&tab=7`),
 );
