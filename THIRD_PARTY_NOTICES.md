@@ -3,6 +3,8 @@
 Kalm is an independent derivative of uBlock Origin Lite. Modifications dated
 2026-10-07 replace the product interface, icons and metadata, and add the
 YouTube comment filter. Engine JavaScript and compiled rule datasets are unchanged.
+The 2026-10-12 overlay also adds a small background entry point for native toolbar
+badge colors; it imports the original engine module without modifying it.
 
 ## Blocking engine
 

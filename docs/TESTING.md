@@ -1,5 +1,17 @@
 # Verification and release status
 
+## 0.1.1 UI update — 2026-10-12
+
+- 67 regressions pass. Package checks preserve each platform's background type,
+  permissions and upstream engine files while verifying the badge-color entry point.
+- The toolbar badge theme changes only colors; missing, throwing and rejecting
+  color APIs do not prevent engine startup. Native badge appearance still needs
+  confirmation in an installed browser after reloading the extension.
+- Local browser checks pass for the 320 px popup, keyboard slider updates,
+  square controls, collapsed blocklist and green list counter. No horizontal overflow.
+- All three browser packages build; Firefox validation reports 0 errors and
+  the same 12 upstream warnings.
+
 ## 0.1.1 development build — 2026-10-10
 
 - 65 regressions pass, including the captured `@Raisyaangel` promotion shelf,

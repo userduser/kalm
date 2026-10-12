@@ -7,10 +7,15 @@ or compiled lists in place. `third_party/engine` is a pinned Git submodule with
 the matching upstream runtime source, build tools and nested libraries.
 
 `tools/upstream.json` locks the release, parent/source commits and SHA-256 hashes
-of all three official platform packages. The overlay keeps platform backgrounds,
+of all three official platform packages. The overlay keeps platform background types,
 permissions, lists and runtime JavaScript. Allowed changes are product metadata,
 icons/localized product name, one dashboard navigation/branding overlay, original
 signature removal and Kalm's own UI/comment scripts. Firefox has its own ID.
+
+Each background starts through `kalm/background.mjs`, which imports the unchanged
+engine module and sets the native toolbar badge colors. Badge API failures are
+isolated from engine startup. Keep this entry point free of timers, network calls
+and blocking logic.
 
 ## Update the engine
 

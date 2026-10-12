@@ -62,6 +62,18 @@ for (const platform of platforms) {
   manifest.author = 'Kalm contributors';
   manifest.homepage_url = 'https://github.com/userduser/kalm';
   manifest.action.default_popup = 'kalm/ui/popup.html';
+  // Preserve each platform's worker/page architecture and upstream module.
+  // The small entry point adds only native badge colors, with no extra permissions.
+  if (manifest.background.type !== 'module')
+    throw new Error(`Unsupported background type: ${platform}`);
+  if (manifest.background.service_worker === '/js/background.js')
+    manifest.background.service_worker = '/kalm/background.mjs';
+  else if (
+    manifest.background.scripts?.length === 1 &&
+    manifest.background.scripts[0] === '/js/background.js'
+  )
+    manifest.background.scripts = ['/kalm/background.mjs'];
+  else throw new Error(`Unsupported background entry point: ${platform}`);
   manifest.icons = Object.fromEntries(
     [16, 32, 64, 128, ...(platform === 'safari' ? [512] : [])].map((size) => [
       size,
@@ -141,7 +153,7 @@ for (const platform of platforms) {
         uBlockCommit: pin.uBlockCommit,
         packageSHA256: item.sha256,
         modifications:
-          'Own UI, icons, product metadata and YouTube comment scripts. Engine JavaScript and rulesets unchanged.',
+          'Own UI, icons, product metadata, badge-color entry point and YouTube comment scripts. Engine JavaScript and rulesets unchanged.',
       },
       null,
       2,

@@ -27,7 +27,13 @@ for (const platform of platforms) {
       );
       assert.equal(manifest.name, 'Kalm');
       assert.equal(manifest.manifest_version, 3);
-      assert.deepEqual(manifest.background, original.background);
+      const background = { ...original.background };
+      if (background.service_worker) background.service_worker = '/kalm/background.mjs';
+      else background.scripts = ['/kalm/background.mjs'];
+      assert.deepEqual(manifest.background, background);
+      const entry = fs.readFileSync(path.join(output, 'kalm/background.mjs'), 'utf8');
+      assert.match(entry, /import '\.\.\/js\/background\.js';/);
+      assert.ok(fs.existsSync(path.join(output, 'kalm/ui/badge.mjs')));
       assert.deepEqual(manifest.permissions, original.permissions);
       assert.deepEqual(manifest.declarative_net_request, original.declarative_net_request);
       const [main, bridge] = manifest.content_scripts.slice(-2);

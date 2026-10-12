@@ -10,15 +10,18 @@
   </head>
   <body class="popup">
     <header class="row">
-      <div class="brand"><img src="assets/logo.svg" alt="" /><span>Kalm</span></div>
+      <a class="brand" id="about" href="options.html?section=about" aria-label="About Kalm"
+        ><img src="assets/logo.svg" alt="" /><span>Kalm</span></a
+      >
       <span class="hostname muted" id="hostname">Connecting…</span>
     </header>
     <main>
       <section class="section" id="mode-section">
         <div class="row">
-          <h2>Filtering</h2>
-          <output id="mode-name" class="mode">—</output>
+          <h2>Ad blocking</h2>
+          <button class="icon" id="ad-setup" aria-label="Ad blocking setup">↗</button>
         </div>
+        <output id="mode-name" class="sr-only">—</output>
         <input
           id="mode"
           class="range"
@@ -34,11 +37,6 @@
           <span>Off</span><span>Basic</span><span>Optimal</span><span>Complete</span>
         </div>
       </section>
-      <section class="section">
-        <button class="setup row" id="ad-setup">
-          <span>Ad blocking</span><span class="chevron" aria-hidden="true">↗</span>
-        </button>
-      </section>
       <section class="section row">
         <label class="switch"
           ><span>Comment protection</span
@@ -48,7 +46,7 @@
             role="switch"
             aria-label="Comment protection"
             disabled /></label
-        ><button class="icon" id="comment-setup" aria-label="Comment protection setup">⚙</button>
+        ><button class="icon" id="comment-setup" aria-label="Comment protection setup">↗</button>
       </section>
     </main>
     <a
@@ -72,8 +70,5 @@
       <span class="donate-copy"><span>Buy me a coffee</span><small>Donate</small></span>
     </a>
     <div id="status" class="status" role="status"></div>
-    <footer>
-      <a href="options.html?section=about" id="about">About</a>
-    </footer>
   </body>
 </html>

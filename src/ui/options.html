@@ -42,15 +42,14 @@
         <p class="muted" id="target-label"></p>
         <div class="stack">
           <button class="button row" id="picker">
-            <span>Create a custom filter</span
-            ><span class="chevron" aria-hidden="true">↗</span></button
+            <span>Create filter</span><span class="chevron" aria-hidden="true">↗</span></button
           ><button class="button row" id="zapper">
-            <span>Remove an element</span><span class="chevron" aria-hidden="true">↗</span>
+            <span>Remove element</span><span class="chevron" aria-hidden="true">↗</span>
           </button>
         </div>
         <div class="section">
           <label class="switch row"
-            ><span>Show blocked requests in toolbar</span
+            ><span>Toolbar counter</span
             ><input id="show-count" type="checkbox" role="switch" disabled /></label
           ><small id="count-note" hidden>Unavailable in this browser.</small>
         </div>
@@ -74,8 +73,7 @@
           </div>
         </div>
         <button class="setup row" id="lists">
-          <span>Filter lists & advanced filters</span
-          ><span class="chevron" aria-hidden="true">↗</span>
+          <span>Filter lists</span><span class="chevron" aria-hidden="true">↗</span>
         </button>
         <button class="button feedback" data-feedback="ads">Feedback</button>
       </section>
@@ -83,8 +81,13 @@
         <h1>Comment protection</h1>
         <div class="section">
           <label class="switch row toggle-row"
-            ><span>Comment filter</span
-            ><input id="enabled" type="checkbox" role="switch" disabled /></label
+            ><span>Enabled</span
+            ><input
+              id="enabled"
+              type="checkbox"
+              role="switch"
+              aria-label="Comment protection"
+              disabled /></label
           ><label class="switch row toggle-row"
             ><span>Block all links</span
             ><input id="all-links" type="checkbox" role="switch" disabled /></label

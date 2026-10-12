@@ -32,7 +32,7 @@ $('#comments-enabled').addEventListener('change', async () => {
   try {
     await store.writeEnabled(input.checked);
     await client.reloadYoutube(tab);
-    status('Saved');
+    status('');
   } catch (error) {
     input.checked = !input.checked;
     status(error.message, true);

@@ -103,6 +103,7 @@ export const levels = ['Off', 'Basic', 'Optimal', 'Complete'];
 export function renderMode(input, output, value) {
   input.value = String(value);
   input.setAttribute('aria-valuetext', levels[value]);
+  input.style.setProperty('--progress', `${(value / 3) * 100}%`);
   output.textContent = levels[value];
   input.parentElement
     .querySelectorAll('.ticks span')

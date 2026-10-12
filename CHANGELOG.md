@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Flatten the popup and setup UI with square controls, stronger dividers and
+  simpler labels. Move setup controls beside each section, remove duplicated
+  popup rows and its footer, and keep About accessible through the Kalm header.
+- Use a green native toolbar request badge and green blocklist count. Preserve
+  native counting and handle unsupported badge-color APIs without affecting startup.
 - Add a bright “Buy me a coffee” popup button with a dark cup icon and muted
   “Donate” subtitle. Rename comment controls to “Comment protection” and remove
   the popup's Ready label.
