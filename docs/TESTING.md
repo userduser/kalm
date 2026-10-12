@@ -1,5 +1,26 @@
 # Verification and release status
 
+## Native Chromium demo — 2026-10-12
+
+- Install the actual 0.1.2 Chromium package in an isolated Chrome for Testing
+  151.0.7922.34 profile. The combined background engine and comment scripts start.
+- On a real YouTube watch page, initial comments load, ordinary comments become
+  visible and authors with promotion shelves are filtered. This is an initial
+  watch-page check, not a full Shorts/replies/pagination release gate.
+- On a labelled controlled article, the same ad script is delivered with
+  filtering Off and fails with `net::ERR_BLOCKED_BY_CLIENT` at Complete. The
+  native element remover hides the selected newsletter while retaining the article.
+- On a labelled YouTube fixture using production content scripts, six comments
+  become three: the blocked-profile link, promoted-channel author and direct
+  blocked link disappear. The three ordinary comments remain; profile checks
+  report no errors. A repeat uses cached author decisions without more requests.
+- The real settings pages exercise all four default filtering levels, the
+  all-links switch and adding a keyword to the shared list. Current screenshots
+  use the actual extension, without the local simulated browser API adapter.
+- The published demo is clearly labelled as controlled content. It does not
+  establish live YouTube video-ad coverage, toolbar badge appearance or full
+  Firefox/Safari compatibility. Those checks remain separate release gates.
+
 ## 0.1.2 product wording — 2026-10-12
 
 - Use “Kalm - Comment Bot & Ad Blocker” as the package name and “Comment bot
@@ -75,7 +96,7 @@ release gate. [Manifest compatibility](https://developer.mozilla.org/en-US/docs/
 Record browser/OS version, package SHA-256 and pass/fail in a GitHub issue or PR.
 
 1. Install through the documented flow; ensure the background has no startup error.
-2. On a real website, confirm **Ready**, exercise all four modes and denied/granted
+2. On a real website, confirm successful startup, exercise all four modes and denied/granted
    permission paths. Confirm requests actually block in the network panel when
    filtering is enabled and return when Off. Reload after changing modes.
 3. Pick an element and create a persistent filter. Reload to check it persists.

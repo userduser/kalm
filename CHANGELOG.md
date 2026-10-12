@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add a captioned before-and-after video using the actual Chrome extension on
+  labelled controlled pages, plus current store text and interface screenshots.
 - Thicken the filtering slider and soften control corners throughout the popup
   and setup pages while keeping the layout compact.
 - Rename extension packages to “Kalm - Comment Bot & Ad Blocker” and use

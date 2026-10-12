@@ -4,11 +4,11 @@
 
 An open-source ad blocker and scam/NSFW YouTube comment bot blocker.
 
-**0.1.2 is a development preview.** Packages and automated checks are available
-for Chromium, Firefox and Safari. Live Firefox/Safari verification and store
-signing are pending; do not describe this release as fully tested in those browsers.
+Chrome is available through the Web Store; the **0.1.2 update is pending review**.
+Firefox and Safari packages are development previews. Live verification and
+signing for those browsers remain pending.
 
-![Kalm interface preview](docs/screenshots/interface.png)
+![Kalm comment bot blocker](docs/screenshots/comment-bot-blocker.jpg)
 
 - A four-position slider: Off, Basic, Optimal, Complete. The toolbar slider
   applies to the current website; setup also has a default for other websites.
@@ -24,6 +24,8 @@ signing are pending; do not describe this release as fully tested in those brows
   and avatars are not fetched for screening.
 - Local settings, bundled fonts, no analytics, account or Kalm server.
 
+[Chrome Web Store](https://chromewebstore.google.com/detail/pkkjnfbgokmbhhppmkbfgfcgapmddinf) ·
+[Watch the before-and-after demo](https://youtu.be/0s1joRPhkdI) ·
 [Download preview builds](https://github.com/userduser/kalm/releases) ·
 [Install](docs/INSTALL.md) · [Validation status](docs/TESTING.md) ·
 [Changelog](CHANGELOG.md) · [Privacy](docs/PRIVACY.md)
