@@ -17,6 +17,7 @@
   --line: #3b483b;
   --green: #b8f0ce;
   --surface: #171d17;
+  --radius: 6px;
 }
 * {
   box-sizing: border-box;
@@ -124,7 +125,7 @@ small {
 .icon {
   background: transparent;
   border: 1px solid var(--line);
-  border-radius: 0;
+  border-radius: var(--radius);
   width: 30px;
   height: 30px;
   flex-shrink: 0;
@@ -150,7 +151,7 @@ small {
   flex-shrink: 0;
   width: 35px;
   height: 21px;
-  border-radius: 0;
+  border-radius: var(--radius);
   background: #39443d;
   position: relative;
   margin: 0;
@@ -162,7 +163,7 @@ small {
   position: absolute;
   width: 15px;
   height: 15px;
-  border-radius: 0;
+  border-radius: 3px;
   top: 3px;
   left: 3px;
   background: #abb6af;
@@ -181,13 +182,14 @@ small {
 .range {
   appearance: none;
   width: 100%;
-  height: 24px;
+  height: 28px;
   background: transparent;
   cursor: pointer;
   margin: 10px 0 6px;
 }
 .range::-webkit-slider-runnable-track {
-  height: 3px;
+  height: 10px;
+  border-radius: 5px;
   background: linear-gradient(
     to right,
     var(--green) 0% var(--progress, 66.67%),
@@ -196,26 +198,30 @@ small {
 }
 .range::-webkit-slider-thumb {
   appearance: none;
-  width: 12px;
-  height: 17px;
-  margin-top: -7px;
-  border: 1px solid #101310;
-  border-radius: 0;
+  box-sizing: border-box;
+  width: 18px;
+  height: 18px;
+  margin-top: -4px;
+  border: 2px solid #101310;
+  border-radius: var(--radius);
   background: var(--green);
 }
 .range::-moz-range-track {
-  height: 3px;
+  height: 10px;
+  border-radius: 5px;
   background: var(--line);
 }
 .range::-moz-range-progress {
-  height: 3px;
+  height: 10px;
+  border-radius: 5px;
   background: var(--green);
 }
 .range::-moz-range-thumb {
-  width: 12px;
-  height: 17px;
-  border: 1px solid #101310;
-  border-radius: 0;
+  box-sizing: border-box;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #101310;
+  border-radius: var(--radius);
   background: var(--green);
 }
 .ticks {
@@ -246,7 +252,7 @@ small {
 .button {
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: 0;
+  border-radius: var(--radius);
   padding: 12px;
   text-align: left;
 }
@@ -311,7 +317,7 @@ small {
   justify-content: center;
   gap: 10px;
   padding: 11px 14px;
-  border-radius: 0;
+  border-radius: var(--radius);
   background: var(--green);
   color: #123c2b;
   font-size: 14px;
@@ -405,7 +411,7 @@ textarea {
   background: var(--surface);
   border: 1px solid var(--line);
   color: inherit;
-  border-radius: 0;
+  border-radius: var(--radius);
   padding: 11px 12px;
 }
 input[type='text'] {

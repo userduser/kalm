@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Thicken the filtering slider and soften control corners throughout the popup
+  and setup pages while keeping the layout compact.
 - Rename extension packages to “Kalm - Comment Bot & Ad Blocker” and use
   “Comment bot blocker” in the UI. Describe the YouTube feature as blocking
   scam/NSFW comment bots through bot links, channel promotions and custom rules.
