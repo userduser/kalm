@@ -1,10 +1,10 @@
 <img src="src/ui/assets/logo.svg" width="64" alt="Kalm logo">
 
-# Kalm
+# Kalm - Comment Bot & Ad Blocker
 
-A quieter web. Ad blocking and YouTube comment screening, with simple controls.
+An open-source ad blocker and scam/NSFW YouTube comment bot blocker.
 
-**0.1.1 is a development preview.** Packages and automated checks are available
+**0.1.2 is a development preview.** Packages and automated checks are available
 for Chromium, Firefox and Safari. Live Firefox/Safari verification and store
 signing are pending; do not describe this release as fully tested in those browsers.
 
@@ -14,7 +14,8 @@ signing are pending; do not describe this release as fully tested in those brows
   applies to the current website; setup also has a default for other websites.
 - Create a persistent element filter, or remove an element for the current page.
 - Optional request counts in browsers that expose the native badge API.
-- Screen YouTube comments before revealing them, including later batches/replies.
+- Hide scam/NSFW comment bots using bot links and channel promotions. Comments
+  are checked before appearing, including later batches and replies.
 - Optional all-links blocking and literal word/phrase blocking.
 - One shared list for bot domains and keywords, collapsed by default.
 - Author bios and visible channel promotion shelves are screened with bounded

@@ -1,5 +1,15 @@
 # Verification and release status
 
+## 0.1.2 product wording — 2026-10-12
+
+- Use “Kalm - Comment Bot & Ad Blocker” as the package name and “Comment bot
+  blocker” in the compact UI. Metadata describes scam/NSFW YouTube comment bots
+  and the link, channel promotion and keyword checks used to block them.
+- 67 regressions pass; the popup label fits at 320 px. All browser packages build,
+  and Firefox validation reports 0 errors with the same 12 upstream warnings.
+- Store metadata takes effect after the updated package is submitted and published.
+  No ranking or installation increase has been measured from this change.
+
 ## 0.1.1 UI update — 2026-10-12
 
 - 67 regressions pass. Package checks preserve each platform's background type,

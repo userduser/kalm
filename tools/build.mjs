@@ -9,8 +9,9 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const pin = JSON.parse(await readFile(path.join(root, 'tools/upstream.json')));
 const pkg = JSON.parse(await readFile(path.join(root, 'package.json')));
+const title = 'Kalm - Comment Bot & Ad Blocker';
 const description =
-  'A quieter web. Ad blocking and YouTube comment screening, with simple controls.';
+  'Block ads and YouTube scam/NSFW comment bots using bot links, channel promotions and keywords.';
 const mainFiles = ['settings', 'rules', 'filter', 'profiles', 'gate', 'runtime', 'extension-start'];
 const platforms = process.argv.slice(2).length ? process.argv.slice(2) : Object.keys(pin.packages);
 const cache = path.join(root, '.cache/upstream');
@@ -55,7 +56,7 @@ for (const platform of platforms) {
   await writeFile(path.join(output, 'kalm/comments/isolated-bridge.js'), bridge);
   const manifestPath = path.join(output, 'manifest.json');
   const manifest = JSON.parse(await readFile(manifestPath));
-  manifest.name = 'Kalm';
+  manifest.name = title;
   manifest.short_name = 'Kalm';
   manifest.description = description;
   manifest.version = pkg.version;
@@ -111,7 +112,7 @@ for (const platform of platforms) {
   for (const locale of await readdir(path.join(output, '_locales'))) {
     const file = path.join(output, '_locales', locale, 'messages.json');
     const messages = JSON.parse(await readFile(file));
-    messages.extName.message = 'Kalm';
+    messages.extName.message = title;
     messages.extShortDesc.message = description;
     await writeFile(file, JSON.stringify(messages, null, 2) + '\n');
   }

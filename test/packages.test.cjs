@@ -25,7 +25,7 @@ for (const platform of platforms) {
           'manifest.json',
         ]),
       );
-      assert.equal(manifest.name, 'Kalm');
+      assert.equal(manifest.name, 'Kalm - Comment Bot & Ad Blocker');
       assert.equal(manifest.manifest_version, 3);
       const background = { ...original.background };
       if (background.service_worker) background.service_worker = '/kalm/background.mjs';

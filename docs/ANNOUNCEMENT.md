@@ -1,7 +1,8 @@
 # Preview announcement
 
-Kalm is an open-source ad blocker with built-in YouTube comment screening. It has
-a simple filtering slider, an optional all-links filter, and a shared list for
+Kalm is an open-source ad blocker and scam/NSFW YouTube comment bot blocker. It
+checks bot links and channel promotions before comments appear. It has a simple
+filtering slider, an optional all-links filter, and a shared list for
 bot links and keywords. Development builds for Chrome, Firefox and Safari are
 available. I'm looking for testers before the first fully verified release.
 

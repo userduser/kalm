@@ -22,7 +22,7 @@
   }
   window.browser = {
     runtime: {
-      getManifest: () => ({ version: '0.1.0 · UI preview' }),
+      getManifest: () => ({ version: '0.1.2 · UI preview' }),
       getURL: (value) => '/' + value,
       sendMessage: async (message) => {
         record('message', message);
